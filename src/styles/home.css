@@ -1,5 +1,27 @@
 /* ========== Intro Section ========== */
-.intro-section { background: radial-gradient(circle at 20% 30%, rgba(108,92,231,0.15) 0%, transparent 50%); }
+.intro-section {
+  background: radial-gradient(circle at 20% 30%, rgba(108,92,231,0.15) 0%, transparent 50%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  /* prevents navbar overlap */
+  padding-top: 100px;
+  padding-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .intro-section { padding-top: 80px; }
+}
+
+@media (max-width: 360px) {
+  .intro-section { padding-top: 70px; }
+}
+
+/* CTA buttons always side-by-side */
+.intro-section .d-flex.flex-wrap.gap-3 {
+  flex-wrap: nowrap !important;
+}
+
 .floating-shapes { position: absolute; inset: 0; pointer-events: none; }
 .shape { position: absolute; border-radius: 50%; background: var(--color-accent-gradient); opacity: 0.2; filter: blur(30px); }
 .shape-1 { width: 300px; height: 300px; top: 10%; left: -5%; }
@@ -24,14 +46,43 @@
 .cursor { font-weight: 300; animation: blink 1s infinite; }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
+/* ---------- mobile intro text adjustments ---------- */
+@media (max-width: 768px) {
+  .intro-section .display-3 { font-size: 1.9rem !important; }
+  .role-wrapper { font-size: 1rem !important; }
+  .profile-3d-wrapper { width: 200px; height: 200px; }
+}
+
+@media (max-width: 576px) {
+  .intro-section .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+  /* still nowrap and reduce gap slightly */
+  .intro-section .d-flex.flex-wrap.gap-3 { gap: 0.5rem !important; }
+}
+
+/* 360px narrow phones */
+@media (max-width: 360px) {
+  .intro-section .display-3 { font-size: 1.55rem !important; }
+  .role-wrapper { font-size: 0.9rem !important; }
+  .intro-section .btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+  }
+  .profile-3d-wrapper { width: 160px; height: 160px; }
+}
+
+/* ========== Skills Section ========== */
+/* … rest of skills, domains, education, etc. */
+
 /* ========== Skills Section ========== */
 .filter-pill {
   background: var(--color-surface-card); border: 1px solid var(--color-border);
   color: var(--color-text-secondary); padding: 0.5rem 1.2rem; border-radius: 50px;
   font-weight: 500; font-size: 0.9rem; cursor: pointer; transition: all 0.3s var(--transition-smooth);
 }
-.filter-pill.active,
-.filter-pill:hover { background: var(--color-accent-gradient); color: #fff; border-color: transparent; box-shadow: 0 4px 15px rgba(108,92,231,0.4); }
+.filter-pill.active, .filter-pill:hover { background: var(--color-accent-gradient); color: #fff; border-color: transparent; box-shadow: 0 4px 15px rgba(108,92,231,0.4); }
 .skill-card-premium {
   border: 1px solid var(--color-border); background: var(--color-surface);
   backdrop-filter: blur(12px); border-radius: 20px; height: 100%;
@@ -53,8 +104,10 @@
   border-radius: 50%; filter: blur(6px); transform: translateX(-50%); opacity: 0.8;
   box-shadow: 0 0 12px var(--color-accent);
 }
+/* skill track light‑theme fix */
+body.theme-light .skill-track { background: rgba(0,0,0,0.1); }
 
-/* ========== Domains Section (if used) ========== */
+/* ========== Domains Section ========== */
 .domains-grid { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
 .domain-link {
   display: flex; flex-direction: column; padding: 1.5rem 2rem;
@@ -76,54 +129,21 @@
 .domain-link:hover .domain-link-arrow { transform: translateX(6px); opacity: 1; }
 
 /* ========== Education Section ========== */
-.education-section { position: relative; }
-.edu-timeline-container { max-width: 800px; margin: 0 auto; }
-.edu-card-wrapper { position: relative; margin-bottom: 2rem; }
 .edu-card {
-  display: flex; border-radius: 20px; background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.06);
-  padding: 1.5rem; gap: 1.5rem; transition: box-shadow 0.3s, border-color 0.3s;
+  background: var(--color-surface-card);        /* instead of rgba(255,255,255,0.04) */
+  border: 1px solid var(--color-border);
 }
-.edu-card:hover { border-color: var(--color-accent); box-shadow: 0 0 30px rgba(108,92,231,0.15); }
-.edu-timeline { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
-.edu-dot { width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 12px currentColor; flex-shrink: 0; }
-.edu-line { width: 2px; flex: 1; min-height: 40px; opacity: 0.4; }
-.edu-content { flex: 1; }
-.edu-degree { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; margin-bottom: 0.2rem; color: var(--color-text-primary); }
-.edu-status-badge { padding: 0.3rem 0.9rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
-.edu-institution { font-size: 1rem; font-weight: 500; color: var(--color-accent-light); margin-bottom: 0.15rem; }
-.edu-location { font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 1rem; }
-.edu-meta-row { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1rem; }
 .edu-meta-item {
-  display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem;
-  color: var(--color-text-secondary); background: rgba(255,255,255,0.04);
-  padding: 0.4rem 0.8rem; border-radius: 8px;
+  background: var(--color-surface);
 }
-.edu-meta-item svg { flex-shrink: 0; opacity: 0.6; }
-.edu-highlights { list-style: none; padding: 0; margin: 0; }
 .edu-highlights li {
-  position: relative; padding-left: 1.2rem; margin-bottom: 0.4rem;
-  font-size: 0.85rem; color: var(--color-text-secondary); line-height: 1.5;
-}
-.edu-highlights li::before {
-  content: ''; position: absolute; left: 0; top: 0.55rem;
-  width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent);
-}
-@media (max-width: 576px) {
-  .edu-card { flex-direction: column; gap: 0.5rem; }
-  .edu-timeline { flex-direction: row; align-items: center; }
-  .edu-line { width: 40px; height: 2px; min-height: auto; }
+  color: var(--color-text-secondary);
 }
 
 /* ========== Currently Learning ========== */
-.learning-card {
-  border-radius: 16px; cursor: default; transition: all 0.3s ease;
-  background: var(--color-surface-card); border: 1px solid var(--color-border);
-}
-.learning-card:hover { border-color: var(--color-accent); box-shadow: 0 4px 15px rgba(108,92,231,0.2); }
-.learning-icon { font-size: 1.2rem; }
-.learning-name { font-weight: 500; color: var(--color-text-primary); }
+.learning-card { background: var(--color-surface-card); border: 1px solid var(--color-border); }
+.learning-name { color: var(--color-text-primary); }
 
-/* ========== Featured Projects (Home) ========== */
+/* ========== Featured Projects ========== */
 .project-card-featured { transition: transform 0.3s, box-shadow 0.3s; color: inherit; }
 .project-card-featured:hover { transform: translateY(-5px); }

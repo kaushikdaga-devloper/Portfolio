@@ -47,34 +47,27 @@ const AssistantWidget = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showPrompt, setShowPrompt] = useState(true); // visible until scrolled past 50%
+  const [showPrompt, setShowPrompt] = useState(true);
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ---- Scroll listener: hide prompt after 50% of the page ----
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight;
       const pageHeight = document.documentElement.scrollHeight;
-      // If user has seen more than 50% of the page, hide the prompt
       setShowPrompt(scrollPosition < pageHeight * 0.5);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // check initial position
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // ---- Scroll to bottom when messages change ----
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  useEffect(() => { scrollToBottom(); }, [messages]);
 
-  // ---- Send message handler ----
   const sendMessage = async () => {
     if (!input.trim() || loading) return;
     const userMessage = input;
@@ -100,7 +93,6 @@ const AssistantWidget = () => {
 
   return (
     <>
-      {/* ---- Home page prompt (above button, with scroll-triggered hide) ---- */}
       <AnimatePresence>
         {location.pathname === '/' && !open && showPrompt && (
           <motion.div
@@ -121,7 +113,6 @@ const AssistantWidget = () => {
         )}
       </AnimatePresence>
 
-      {/* ---- Floating Chat Button ---- */}
       <motion.button
         className="assistant-fab"
         onClick={() => setOpen(true)}
@@ -134,7 +125,6 @@ const AssistantWidget = () => {
         </svg>
       </motion.button>
 
-      {/* ---- Chat Panel (unchanged) ---- */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -153,7 +143,6 @@ const AssistantWidget = () => {
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Header */}
               <div className="assistant-panel-header">
                 <div>
                   <h5 className="assistant-title">Kaushik's AI Assistant</h5>
@@ -167,7 +156,6 @@ const AssistantWidget = () => {
                 </button>
               </div>
 
-              {/* Messages Area */}
               <div className="assistant-messages">
                 {messages.length === 0 && (
                   <div className="assistant-empty">
@@ -212,10 +200,9 @@ const AssistantWidget = () => {
                           {msg.content}
                         </ReactMarkdown>
                         {msg.buttons && msg.buttons.length > 0 && (
-                          <div className="assistant-buttons ">
+                          <div className="assistant-buttons">
                             {msg.buttons.map((btn, idx) => (
-
-                                <ActionButton label={btn.label} url={btn.url} navigate={navigate} />
+                              <ActionButton key={idx} label={btn.label} url={btn.url} navigate={navigate} />
                             ))}
                           </div>
                         )}
@@ -236,7 +223,6 @@ const AssistantWidget = () => {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Input Area */}
               <div className="assistant-input-area">
                 <input
                   type="text"

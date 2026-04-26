@@ -6,6 +6,7 @@
   padding: 0.45rem 1.2rem; font-size: 0.85rem; color: var(--color-text-secondary);
   box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;
 }
+body.theme-light .profile-views-badge { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.08); }
 .profile-views-badge:hover { border-color: var(--color-accent); box-shadow: 0 0 20px rgba(108,92,231,0.25); color: var(--color-text-primary); transform: translateY(-1px); }
 .profile-views-badge strong { color: var(--color-accent-light); font-weight: 700; margin: 0 0.15rem; }
 .views-icon,

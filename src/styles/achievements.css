@@ -11,9 +11,9 @@
   display: flex;
   flex-direction: column;
   transition: box-shadow 0.3s, border-color 0.3s;
-  background: rgba(255, 255, 255, 0.035);
+  background: var(--color-surface-card);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--color-border);
 }
 .achievement-bento-card:hover { border-color: var(--color-accent); box-shadow: 0 0 30px rgba(108, 92, 231, 0.2); }
 .achievement-bento-card.featured { grid-column: span 2; }
@@ -23,7 +23,7 @@
 .ach-title { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; margin-bottom: 0.2rem; color: var(--color-text-primary); }
 .ach-org { font-size: 0.8rem; color: var(--color-accent-light); font-weight: 500; }
 .ach-desc { font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.7; flex-grow: 1; margin-bottom: 1rem; }
-.ach-cert-preview { position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; margin-bottom: 0.8rem; border: 1px solid rgba(255, 255, 255, 0.08); transition: border-color 0.3s, box-shadow 0.3s; }
+.ach-cert-preview { position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; margin-bottom: 0.8rem; border: 1px solid var(--color-border); transition: border-color 0.3s, box-shadow 0.3s; }
 .ach-cert-preview:hover { border-color: var(--color-accent); box-shadow: 0 0 20px rgba(108, 92, 231, 0.25); }
 .ach-cert-img { width: 100%; height: 160px; object-fit: cover; display: block; transition: transform 0.3s ease; }
 .ach-cert-preview:hover .ach-cert-img { transform: scale(1.04); }
@@ -34,7 +34,7 @@
 .ach-link { font-size: 0.85rem; font-weight: 500; color: var(--color-accent-light); text-decoration: none; transition: color 0.2s; }
 .ach-link:hover { color: var(--color-accent); }
 
-/* Reuse lightbox from projects.css (duplicated for encapsulation) */
+/* lightbox (reused) */
 .lightbox-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9999;
   display: flex; align-items: center; justify-content: center; padding: 2rem; cursor: zoom-out;
