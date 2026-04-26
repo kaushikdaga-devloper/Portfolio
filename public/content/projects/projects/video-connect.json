@@ -1,0 +1,46 @@
+{
+  "overview": {
+    "title": "Video Connect",
+    "summary": "A seamless video communication platform powered by LiveKit.",
+    "context": [
+      "Built to elevate virtual interactions",
+      "Focus on user‑friendly interfaces",
+      "Designed for scalability with LiveKit"
+    ],
+    "links": {
+      "github": "https://github.com/kaushikdaga-devloper/video-connect",
+      "live": "https://video-connect-tau.vercel.app/"
+    },
+    "heroImage": "/assets/images/projects/video-connect.jpg",
+    "screenshots": [
+      "/portfolio/public/assets/images/Screenshot from 2026-04-26 17-10-56.png",
+      "https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=800&auto=format",
+      "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=800&auto=format"
+    ]
+  },
+  "problem": {
+    "statement": "Free video tools are limited, especially with encryption and collaboration features.",
+    "painPoints": [
+      "No encrypted free platform available",
+      "Scattered information during meetings",
+      "Time limits on free tiers"
+    ],
+    "constraints": [
+      "Dependent on LiveKit API",
+      "Full web application"
+    ]
+  },
+  "tech": {
+    "stack": ["React", "LiveKit", "WebRTC", "Tailwind CSS"],
+    "architecture": ["SFU (Selective Forwarding Unit)", "Mesh networking fallback"],
+    "integrations": ["LiveKit Server", "STUN/TURN"]
+  },
+  "learnings": {
+    "insights": ["Understanding SFU vs. P2P", "Managing WebRTC state"],
+    "challenges": ["Debugging ICE failures", "Scaling beyond 50 participants"]
+  },
+  "status": {
+    "state": "Active",
+    "details": "Beta released with core video‑conferencing; adding recording next."
+  }
+}

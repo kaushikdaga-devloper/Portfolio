@@ -1,0 +1,18 @@
+[
+  {
+    "role": "Hackathon Participant",
+    "company": "College Hackathons",
+    "duration": "2024",
+    "description": "Participated in two intra-college hackathons, collaborating with teams to prototype full-stack web applications within 24 hours.",
+    "technologies": ["React", "Node.js", "MongoDB"],
+    "color": "#6c5ce7"
+  },
+  {
+    "role": "Ethical Hacking Workshop",
+    "company": "GNIT – Cybersecurity Workshop",
+    "duration": "2024",
+    "description": "Attended a 2-day intensive workshop on ethical hacking. Gained hands-on experience with network defense, packet analysis, and deauthentication attacks.",
+    "technologies": ["Wireshark", "Kali Linux", "Network Security"],
+    "color": "#00b894"
+  }
+]

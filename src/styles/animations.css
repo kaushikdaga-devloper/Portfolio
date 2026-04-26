@@ -1,0 +1,15 @@
+.project-card {
+  transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+.assistant-panel {
+  animation: fadeIn 200ms ease-out;
+}
+
+.assistant-toggle:hover {
+  transform: translateY(-2px);
+}

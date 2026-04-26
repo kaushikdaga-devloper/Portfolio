@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "title": "Home",
+    "description": "Personal portfolio overview"
+  },
+  "sections": [
+    {
+      "id": "intro",
+      "type": "intro",
+      "enabled": true,
+      "data": {
+        "name": "Kaushik Daga",
+        "roles": [
+          "Developer",
+          "Problem Solver",
+          "Systems Thinker"
+        ],
+        "summary": [
+          "Software developer with a deep interest in full‑stack engineering and algorithmic thinking. Currently in my pre‑final year of computer science, I focus on crafting reliable systems and elegant solutions that stand the test of time."
+        ],
+        "image": "/assets/images/profile.jpeg"
+      }
+    },
+    {
+      "id": "domains",
+      "type": "domains",
+      "enabled": true,
+      "data": {
+        "items": [
+          {
+            "title": "Projects",
+            "description": "Selected engineering work with detailed technical breakdowns.",
+            "route": "/projects"
+          },
+          {
+            "title": "DSA & Problem Solving",
+            "description": "Algorithmic thinking and structured problem solving.",
+            "route": "/dsa"
+          },
+          {
+            "title": "Core Computer Science",
+            "description": "Operating systems, networks, databases, and fundamentals.",
+            "route": "/core-cs"
+          },
+          {
+            "title": "Artificial Intelligence and Machine Learning",
+            "description": "Model training, evaluation, and deployment.",
+            "route": "/machine-learning"
+          }
+        ]
+      }
+    },
+    {
+      "id": "skills",
+      "type": "skills",
+      "enabled": true,
+      "data": {
+        "groups": [
+          {
+            "title": "Programming Languages",
+            "items": ["C", "C++", "JavaScript (ES6+)", "Python"]
+          },
+          {
+            "title": "Web Technologies",
+            "items": [
+              "React.js",
+              "Redux",
+              "Node.js",
+              "Express.js",
+              "REST APIs",
+              "HTML5/CSS3",
+              "Bootstrap"
+            ]
+          },
+          {
+            "title": "Databases & Storage",
+            "items": ["SQL", "MongoDB", "MySQL"]
+          },
+          {
+            "title": "Tools & Platforms",
+            "items": [
+              "Git",
+              "GitHub",
+              "Linux (2+ years)",
+              "Postman",
+              "Docker",
+              "Kubernetes",
+              "LLM (Large Language Models)"
+            ]
+          },
+          {
+            "title": "Computer Science Fundamentals",
+            "items": [
+              "Data Structures & Algorithms (DSA)",
+              "Object-Oriented Programming (OOP)",
+              "Database Management Systems (DBMS)",
+              "Operating Systems (OS)",
+              "Computer Networks"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

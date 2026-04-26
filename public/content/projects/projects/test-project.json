@@ -1,0 +1,13 @@
+{
+  "overview": {
+    "title": "Test Project",
+    "summary": "A minimal project to validate the architecture.",
+    "context": ["Verifies routing", "Verifies JSON loading", "Verifies section rendering"],
+    "links": {
+      "github": "",
+      "live": ""
+    },
+    "heroImage": "",
+    "screenshots": []
+  }
+}

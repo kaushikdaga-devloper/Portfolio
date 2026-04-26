@@ -1,0 +1,38 @@
+{
+  "platforms": {
+    "leetcode": {
+      "name": "LeetCode",
+      "totalSolved": 150,
+      "totalProblems": 3089,
+      "easy": 70,
+      "medium": 60,
+      "hard": 20,
+      "languages": ["C++", "Python", "JavaScript"],
+      "skills": ["Dynamic Programming", "Graphs", "Trees", "Greedy"],
+      "profileUrl": "https://leetcode.com/u/your-username",
+      "profileImage": "/assets/images/leetcode-profile.png",
+      "images": [
+        "https://images.unsplash.com/photo-1515879218367-8466d910aua9?w=400&q=80",
+        "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=400&q=80",
+        "https://images.unsplash.com/photo-1531030874896-fdef6826f2f7?w=400&q=80"
+      ]
+    },
+    "hackerrank": {
+      "name": "HackerRank",
+      "totalSolved": 92,
+      "totalProblems": 2000,
+      "easy": 40,
+      "medium": 35,
+      "hard": 17,
+      "languages": ["C++", "Python"],
+      "skills": ["Problem Solving", "Algorithms", "Data Structures"],
+      "profileUrl": "https://www.hackerrank.com/profile/your-username",
+      "profileImage": "/assets/images/hackerrank-profile.png",
+      "images": [
+        "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&q=80",
+        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&q=80",
+        "https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&q=80"
+      ]
+    }
+  }
+}

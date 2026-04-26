@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Top Performer – Ethical Hacking Workshop",
+    "organization": "GNIT, Kolkata",
+    "date": "2024",
+    "description": "Recognized as a Top Performer in a 2-day Ethical Hacking workshop. Learned network defense, packet capturing, and deauthentication protocols.",
+    "icon": "🔐",
+    "certificateImage": "/assets/images/certificates/ethical-hacking.jpg",
+    "certificateLink": "https://example.com/certificate1"
+  },
+  {
+    "title": "Full Stack Development Certificate",
+    "organization": "Apna College (Delta 6.0)",
+    "date": "2024",
+    "description": "Completed 6-month intensive MERN stack bootcamp. Built 7+ projects including Airbnb Clone and Zerodha Dashboard.",
+    "icon": "💻",
+    "certificateImage": "/assets/images/certificates/fsd.jpg",
+    "certificateLink": "https://example.com/certificate2"
+  },
+  {
+    "title": "150+ DSA Problems Solved",
+    "organization": "LeetCode",
+    "date": "2024 – Present",
+    "description": "Consistent problem solving in C++ across Arrays, Linked Lists, Trees, Graphs, and Dynamic Programming.",
+    "icon": "🧠",
+    "certificateImage": "",
+    "certificateLink": "/dsa"
+  },
+  {
+    "title": "Hackathon Participation",
+    "organization": "College Level",
+    "date": "2024",
+    "description": "Participated in two college-level hackathons, building innovative solutions within time constraints.",
+    "icon": "🏆",
+    "certificateImage": "",
+    "certificateLink": "#"
+  }
+]

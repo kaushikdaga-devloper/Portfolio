@@ -1,0 +1,45 @@
+{
+  "overview": {
+    "title": "Smart Travel Planner",
+    "summary": "A location-aware travel planning system that brings clarity to trip organisation.",
+    "context": [
+      "Built to explore real-world API integration",
+      "Focuses on map-driven discovery",
+      "Designed with scalability in mind"
+    ],
+    "links": {
+      "github": "https://github.com/kaushikdaga/smart-travel-planner",
+      "live": "https://smart-travel-planner.vercel.app"
+    },
+    "heroImage": "/assets/images/projects/travel-planner.jpg",
+    "screenshots": [
+      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1530789253388-930c80bdc131?w=800&auto=format&fit=crop"
+    ]
+  },
+  "problem": {
+    "statement": "Planning a trip usually requires switching between multiple tools without a unified context.",
+    "painPoints": [
+      "Users must compare routes, costs, and places manually",
+      "Information is scattered across platforms"
+    ],
+    "constraints": [
+      "Dependent on third-party APIs",
+      "Frontend-only in the initial phase"
+    ]
+  },
+  "tech": {
+    "stack": ["React", "Mapbox GL JS", "Node.js", "REST APIs"],
+    "architecture": ["Micro‑frontend", "API Gateway"],
+    "integrations": ["Google Maps API", "OpenWeatherMap"]
+  },
+  "learnings": {
+    "insights": ["Importance of debouncing map interactions", "Caching external API responses"],
+    "challenges": ["Rate‑limiting with free tier APIs", "Synchronising UI with map state"],
+    "improvements": ["Add real‑time traffic data", "Offline mode for saved trips"]
+  },
+  "status": {
+    "state": "Active",
+    "details": "Core features are stable; exploring AI‑driven suggestions."
+  }
+}

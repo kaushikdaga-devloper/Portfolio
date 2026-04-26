@@ -1,0 +1,23 @@
+[
+  {
+    "title": "How I Solved My First 100 LeetCode Problems",
+    "date": "March 2025",
+    "excerpt": "A journey from brute-force to optimized solutions. My strategy, favorite patterns, and resources that helped me stay consistent.",
+    "tags": ["DSA", "LeetCode", "C++"],
+    "link": "#"
+  },
+  {
+    "title": "Building a Real-Time Video Chat with LiveKit",
+    "date": "February 2025",
+    "excerpt": "Lessons learned from migrating a P2P video app to an SFU architecture, handling adaptive bitrate, and reducing connection drops.",
+    "tags": ["WebRTC", "React", "LiveKit"],
+    "link": "#"
+  },
+  {
+    "title": "Why I Love Problem Solving",
+    "date": "January 2025",
+    "excerpt": "How competitive programming shaped my engineering mindset and taught me to write cleaner, more efficient code.",
+    "tags": ["DSA", "Mindset"],
+    "link": "#"
+  }
+]

@@ -1,0 +1,65 @@
+/* -------------------------------------------------- */
+/*  Design Tokens & Global Reset                       */
+/*  (replace existing src/styles/theme.css & global.css)  */
+/* -------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+
+  --color-bg: #0b0b0f;
+  --color-surface: rgba(255, 255, 255, 0.03);
+  --color-surface-card: rgba(255, 255, 255, 0.06);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-text-primary: #f0f0f5;
+  --color-text-secondary: #a0a0b0;
+  --color-accent: #6c5ce7;
+  --color-accent-light: #a29bfe;
+  --color-accent-gradient: linear-gradient(135deg, #6c5ce7, #a29bfe);
+
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.5);
+  --shadow-glow: 0 0 20px rgba(108, 92, 231, 0.15);
+
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light theme overrides (optional) */
+body.theme-light {
+  --color-bg: #fafafa;
+  --color-surface: rgba(0, 0, 0, 0.02);
+  --color-surface-card: rgba(0, 0, 0, 0.04);
+  --color-border: rgba(0, 0, 0, 0.06);
+  --color-text-primary: #1a1a2e;
+  --color-text-secondary: #5a5a6e;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 8px 32px rgba(0,0,0,0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-accent-light);
+  color: #0b0b0f;
+}
