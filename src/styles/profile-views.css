@@ -1,0 +1,13 @@
+/* ========== Profile Views Counter ========== */
+.profile-views-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(255,255,255,0.04); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 50px;
+  padding: 0.45rem 1.2rem; font-size: 0.85rem; color: var(--color-text-secondary);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;
+}
+.profile-views-badge:hover { border-color: var(--color-accent); box-shadow: 0 0 20px rgba(108,92,231,0.25); color: var(--color-text-primary); transform: translateY(-1px); }
+.profile-views-badge strong { color: var(--color-accent-light); font-weight: 700; margin: 0 0.15rem; }
+.views-icon,
+.views-members-icon { display: flex; align-items: center; color: var(--color-accent-light); opacity: 0.8; }
+.views-members-icon { margin-left: -0.15rem; }

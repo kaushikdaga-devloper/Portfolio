@@ -1,0 +1,8 @@
+/* ========== Experience Page ========== */
+.experience-page { padding-top: 100px; min-height: 100vh; background: var(--color-bg); position: relative; overflow: hidden; }
+.exp-card { border-radius: 20px; transition: all 0.3s ease; }
+.exp-card:hover { border-color: var(--color-accent); box-shadow: 0 0 30px rgba(108,92,231,0.1); }
+.exp-tag { padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: #fff; white-space: nowrap; }
+.exp-role { font-family: var(--font-display); font-weight: 600; margin-bottom: 0.5rem; }
+.exp-desc { font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.7; }
+.exp-tech-badge { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); padding: 0.25rem 0.8rem; border-radius: 20px; font-size: 0.75rem; color: var(--color-text-secondary); }

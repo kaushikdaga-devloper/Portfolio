@@ -212,9 +212,10 @@ const AssistantWidget = () => {
                           {msg.content}
                         </ReactMarkdown>
                         {msg.buttons && msg.buttons.length > 0 && (
-                          <div className="assistant-buttons">
+                          <div className="assistant-buttons ">
                             {msg.buttons.map((btn, idx) => (
-                              <ActionButton key={idx} label={btn.label} url={btn.url} navigate={navigate} />
+
+                                <ActionButton label={btn.label} url={btn.url} navigate={navigate} />
                             ))}
                           </div>
                         )}

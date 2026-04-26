@@ -1,0 +1,6 @@
+/* ========== Blog Page ========== */
+.blog-page { padding-top: 100px; min-height: 100vh; background: var(--color-bg); position: relative; overflow: hidden; }
+.blog-card { border-radius: 20px; transition: transform 0.3s, box-shadow 0.3s; }
+.blog-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+.blog-title { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--color-text-primary); }
+.blog-excerpt { font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.7; }

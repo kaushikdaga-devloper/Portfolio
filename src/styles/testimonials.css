@@ -1,0 +1,6 @@
+/* ========== Testimonials Page ========== */
+.testimonials-page { padding-top: 100px; min-height: 100vh; background: var(--color-bg); position: relative; overflow: hidden; }
+.testimonial-card { border-radius: 20px; }
+.testimonial-avatar img,
+.avatar-placeholder { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; display: flex; align-items: center; justify-content: center; font-weight: 700; background: var(--color-accent-gradient); color: #fff; }
+.avatar-placeholder { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }

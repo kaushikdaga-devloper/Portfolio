@@ -24,8 +24,8 @@ const ProjectTile = ({ project }) => {
           <div className="tile-placeholder" />
           <div className="tile-overlay" />
           <div className="tile-content">
-            <h3 className="tile-title">{title}</h3>
-            <p className="tile-desc">{description}</p>
+            <h3 className="tile-title title">{title}</h3>
+            <p className="tile-desc title">{description}</p>
             <div className="tile-tags">
               {tags.map(tag => (
                 <span key={tag} className="tile-tag">{tag}</span>
