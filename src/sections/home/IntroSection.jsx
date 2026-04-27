@@ -67,7 +67,7 @@ const IntroSection = ({ data }) => {
                   </svg>
                   GitHub
                 </a>
-                <a href="#contact" className="btn btn-outline-primary btn-lg rounded-pill">
+                <a href="https://drive.google.com/file/d/1gTkwsraPfjO525UmDbxr_c7qqzE2XfNs/view?usp=drivesdk" className="btn btn-outline-primary btn-lg rounded-pill">
                   {/* Download icon */}
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
