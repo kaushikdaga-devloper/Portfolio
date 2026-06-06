@@ -10,8 +10,10 @@ const ProfileViewsCounter = () => {
   const [views, setViews] = useState(null);
 
   useEffect(() => {
-    // Call our private backend RPC function to instantly mutate and return the global tracking count
-    fetch(`${SUPABASE_URL}/rest/v1/rpc/increment_views`, {
+    // Adding a timestamp parameter '?t=...' breaks browser caching completely on refreshes
+    const API_URL = `${SUPABASE_URL}/rest/v1/rpc/increment_views?t=${Date.now()}`;
+
+    fetch(API_URL, {
       method: "POST",
       headers: {
         "apikey": SUPABASE_ANON_KEY,
@@ -24,15 +26,14 @@ const ProfileViewsCounter = () => {
       return res.json();
     })
     .then((countResult) => {
-      // The RPC function directly returns the fresh integer number
       if (countResult !== undefined) {
         setViews(Number(countResult));
       }
     })
     .catch((error) => {
       console.error("Global view counter tracking failure:", error);
-      // Fallback baseline display if user has strict adblockers active
-      setViews(8); 
+      // Removed the hardcoded fallback number so you can see if an error is actually happening
+      setViews('...'); 
     });
   }, []);
 
