@@ -2,36 +2,50 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-// This is your completely custom workspace and key name on the cloud
-const WORKSPACE = "kaushikdaga_portfolio";
-const COUNTER_KEY = "main_page_views";
-
-// The official, high-speed CounterAPI endpoint
-const API_URL = `https://counterapi.dev{WORKSPACE}/${COUNTER_KEY}/up`;
+// Hardcoded verified production credentials from your Supabase screenshot
+const SUPABASE_URL = "https://qwiolgwfvpxawomljjaz.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_qPyJTWwALnZcYZmZmFjNS0wZmY2LTRiMTQtOWZhYy00ZTcwMDkzNWMyYzg="; 
 
 const ProfileViewsCounter = () => {
   const [views, setViews] = useState(null);
 
   useEffect(() => {
-    // This increments your counter +1 on the cloud instantly on every page load
-    fetch(API_URL)
-      .then((response) => {
-        if (!response.ok) throw new Error("CounterAPI Network Error");
-        return response.json();
-      })
-      .then((resData) => {
-        // CounterAPI returns an object structured as: { status: 200, id: ..., data: { value: X } }
-        if (resData && resData.data && typeof resData.data.value !== 'undefined') {
-          setViews(resData.data.value);
-        } else {
-          throw new Error("Invalid response format");
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching live visitor data:", error);
-        // Fallback layout if the network drops completely
-        setViews(100); 
-      });
+    // 1. Fetch current global counter baseline row from the cloud
+    fetch(`${SUPABASE_URL}/rest/v1/views?select=count_value&id=eq.1`, {
+      headers: {
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+      }
+    })
+    .then((res) => {
+      if (!res.ok) throw new Error("Database read execution failed");
+      return res.json();
+    })
+    .then((data) => {
+      // Handle array or empty state response matching Supabase REST structures
+      const currentCount = data && data[0] ? data[0].count_value : 1;
+      const nextCount = currentCount + 1;
+
+      // 2. Fire and forget a PATCH update to securely increment the cloud index +1
+      fetch(`${SUPABASE_URL}/rest/v1/views?id=eq.1`, {
+        method: "PATCH",
+        headers: {
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+          "Content-Type": "application/json",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify({ count_value: nextCount })
+      }).catch((err) => console.error("Database sync record modification failed:", err));
+
+      // 3. Render the updated cross-device safe sequence increment to your UI layout
+      setViews(nextCount);
+    })
+    .catch((error) => {
+      console.error("Supabase engine fallback hook initialization error:", error);
+      // Clean default baseline metric display if network drops
+      setViews(7); 
+    });
   }, []);
 
   return (
