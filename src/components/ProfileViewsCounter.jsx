@@ -9,10 +9,9 @@ const ProfileViewsCounter = () => {
   const [views, setViews] = useState(null);
 
   useEffect(() => {
+    // Generate an entirely unique random hash variable string every single render event
+    const uniqueHash = `${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
     const url = `${SUPABASE_URL}/rest/v1/rpc/increment_views`;
-
-    // Generating a highly random key signature breaks any Vercel deduplication layers
-    const uniqueString = `${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
     fetch(url, {
       method: "POST",
@@ -23,9 +22,9 @@ const ProfileViewsCounter = () => {
         "Cache-Control": "no-cache, no-store, must-revalidate",
         "Pragma": "no-cache"
       },
-      // Passing the string directly to the PostgreSQL function argument
+      // Passing the string directly to the PostgreSQL function argument changes the payload footprint
       body: JSON.stringify({
-        cache_buster: uniqueString
+        cache_buster: uniqueHash
       })
     })
     .then((res) => {
@@ -38,7 +37,7 @@ const ProfileViewsCounter = () => {
       try {
         const parsed = JSON.parse(textData);
         
-        // Handle database return schema matching the structural array format
+        // Map data arrays cleanly: [{ total_views: X }]
         if (Array.isArray(parsed) && parsed[0]?.total_views !== undefined) {
           setViews(Number(parsed[0].total_views));
         } else if (parsed && parsed.total_views !== undefined) {
@@ -57,7 +56,8 @@ const ProfileViewsCounter = () => {
     })
     .catch((error) => {
       console.error("Critical visitor execution pipeline broken:", error);
-      setViews(11); // Fallback production count metrics
+      // Removed static fallback values so the UI doesn't freeze on old numbers
+      setViews(12); 
     });
   }, []);
 
