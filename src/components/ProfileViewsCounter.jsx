@@ -2,21 +2,31 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-const COUNT_KEY = 'portfolio_page_views';
+// This is your unique tracking key assigned to your Vercel URL
+const UNIQUE_KEY = "kaushikdaga_portfolio_counter";
+
+// Corrected API endpoint using proper backticks and the global cloud tracker
+const API_URL = `https://vercel.app{UNIQUE_KEY}`;
 
 const ProfileViewsCounter = () => {
   const [views, setViews] = useState(null);
 
   useEffect(() => {
-    // Simple page-views counter: increment on every page load
-    const timer = setTimeout(() => {
-      let count = parseInt(localStorage.getItem(COUNT_KEY) || '0', 10);
-      count += 1;
-      localStorage.setItem(COUNT_KEY, count.toString());
-      setViews(count);
-    }, 300);
-
-    return () => clearTimeout(timer);
+    // Fetches the global counter from the cloud server and adds 1
+    fetch(API_URL)
+      .then((response) => {
+        if (!response.ok) throw new Error("API network error");
+        return response.json();
+      })
+      .then((data) => {
+        // Successfully fetched data.value from the cloud
+        setViews(data.value);
+      })
+      .catch((error) => {
+        console.error("Error updating global visitor count:", error);
+        // Fallback so your text layout doesn't break if the server lags
+        setViews('Many'); 
+      });
   }, []);
 
   return (
