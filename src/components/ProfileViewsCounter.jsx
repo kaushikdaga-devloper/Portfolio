@@ -2,30 +2,35 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-// This is your unique tracking key assigned to your Vercel URL
-const UNIQUE_KEY = "kaushikdaga_portfolio_counter";
+// This is your completely custom workspace and key name on the cloud
+const WORKSPACE = "kaushikdaga_portfolio";
+const COUNTER_KEY = "main_page_views";
 
-// Corrected API endpoint using proper backticks and the global cloud tracker
-const API_URL = `https://vercel.app{UNIQUE_KEY}`;
+// The official, high-speed CounterAPI endpoint
+const API_URL = `https://counterapi.dev{WORKSPACE}/${COUNTER_KEY}/up`;
 
 const ProfileViewsCounter = () => {
   const [views, setViews] = useState(null);
 
   useEffect(() => {
-    // Fetches the global counter from the cloud server and adds 1
+    // This increments your counter +1 on the cloud instantly on every page load
     fetch(API_URL)
       .then((response) => {
-        if (!response.ok) throw new Error("API network error");
+        if (!response.ok) throw new Error("CounterAPI Network Error");
         return response.json();
       })
-      .then((data) => {
-        // Successfully fetched data.value from the cloud
-        setViews(data.value);
+      .then((resData) => {
+        // CounterAPI returns an object structured as: { status: 200, id: ..., data: { value: X } }
+        if (resData && resData.data && typeof resData.data.value !== 'undefined') {
+          setViews(resData.data.value);
+        } else {
+          throw new Error("Invalid response format");
+        }
       })
       .catch((error) => {
-        console.error("Error updating global visitor count:", error);
-        // Fallback so your text layout doesn't break if the server lags
-        setViews('Many'); 
+        console.error("Error fetching live visitor data:", error);
+        // Fallback layout if the network drops completely
+        setViews(100); 
       });
   }, []);
 
