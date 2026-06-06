@@ -10,41 +10,29 @@ const ProfileViewsCounter = () => {
   const [views, setViews] = useState(null);
 
   useEffect(() => {
-    // 1. Fetch current global counter baseline row from the cloud
-    fetch(`${SUPABASE_URL}/rest/v1/views?select=count_value&id=eq.1`, {
+    // Call our private backend RPC function to instantly mutate and return the global tracking count
+    fetch(`${SUPABASE_URL}/rest/v1/rpc/increment_views`, {
+      method: "POST",
       headers: {
         "apikey": SUPABASE_ANON_KEY,
-        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+        "Content-Type": "application/json"
       }
     })
     .then((res) => {
-      if (!res.ok) throw new Error("Database read execution failed");
+      if (!res.ok) throw new Error("Database state alteration rejected");
       return res.json();
     })
-    .then((data) => {
-      // Handle array or empty state response matching Supabase REST structures
-      const currentCount = data && data[0] ? data[0].count_value : 1;
-      const nextCount = currentCount + 1;
-
-      // 2. Fire and forget a PATCH update to securely increment the cloud index +1
-      fetch(`${SUPABASE_URL}/rest/v1/views?id=eq.1`, {
-        method: "PATCH",
-        headers: {
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-          "Content-Type": "application/json",
-          "Prefer": "return=minimal"
-        },
-        body: JSON.stringify({ count_value: nextCount })
-      }).catch((err) => console.error("Database sync record modification failed:", err));
-
-      // 3. Render the updated cross-device safe sequence increment to your UI layout
-      setViews(nextCount);
+    .then((countResult) => {
+      // The RPC function directly returns the fresh integer number
+      if (countResult !== undefined) {
+        setViews(Number(countResult));
+      }
     })
     .catch((error) => {
-      console.error("Supabase engine fallback hook initialization error:", error);
-      // Clean default baseline metric display if network drops
-      setViews(7); 
+      console.error("Global view counter tracking failure:", error);
+      // Fallback baseline display if user has strict adblockers active
+      setViews(8); 
     });
   }, []);
 
