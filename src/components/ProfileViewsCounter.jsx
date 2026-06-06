@@ -9,32 +9,59 @@ const ProfileViewsCounter = () => {
   const [views, setViews] = useState(null);
 
   useEffect(() => {
-    // URL containing a cache-busting timestamp to avoid cached responses
-    const url = `${SUPABASE_URL}/rest/v1/rpc/increment_views?t=${Date.now()}`;
+    const url = `${SUPABASE_URL}/rest/v1/rpc/increment_views`;
 
     fetch(url, {
       method: "POST",
       headers: {
         "apikey": SUPABASE_ANON_KEY,
         "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+        // Forces Vercel edge routers to bypass cache layers entirely
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache"
+      },
+      // Sending a unique payload structure breaks request deduplication for good!
+      body: JSON.stringify({
+        cache_buster: Date.now(),
+        rand_token: Math.random().toString(36).substring(7)
+      })
     })
     .then((res) => {
-      if (!res.ok) throw new Error(`HTTP Error Status: ${res.status}`);
-      return res.json();
+      if (!res.ok) throw new Error(`Network response error: ${res.status}`);
+      return res.text();
     })
-    .then((countResult) => {
-      if (countResult !== undefined && countResult !== null) {
-        setViews(Number(countResult));
-      } else {
-        throw new Error("Received an empty database payload response");
+    .then((textData) => {
+      if (!textData) throw new Error("Received empty server response");
+
+      try {
+        const parsed = JSON.parse(textData);
+        
+        // Handle database table row payload matching [{ total_views: X }]
+        if (Array.isArray(parsed) && parsed[0] && parsed[0].total_views !== undefined) {
+          setViews(Number(parsed[0].total_views));
+        } 
+        else if (Array.isArray(parsed) && parsed[0] !== undefined && !isNaN(parsed[0])) {
+          setViews(Number(parsed[0]));
+        }
+        else if (parsed && parsed.total_views !== undefined) {
+          setViews(Number(parsed.total_views));
+        } 
+        else if (!isNaN(parsed)) {
+          setViews(Number(parsed));
+        }
+      } catch (jsonError) {
+        const cleanNumber = Number(textData.replace(/[^0-9]/g, ''));
+        if (!isNaN(cleanNumber) && cleanNumber > 0) {
+          setViews(cleanNumber);
+        } else {
+          throw jsonError;
+        }
       }
     })
     .catch((error) => {
-      console.error("Database counter initialization failure:", error);
-      // Fallback number so the UI remains interactive if a network connection drops
-      setViews(9); 
+      console.error("Critical visitor counter execution failure:", error);
+      setViews(10); // Baseline placeholder metric if network drops out
     });
   }, []);
 
