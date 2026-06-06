@@ -9,55 +9,54 @@ const ProfileViewsCounter = () => {
   const [views, setViews] = useState(null);
 
   useEffect(() => {
-    // Generate an entirely unique random hash variable string every single render event
-    const uniqueHash = `${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
-    const url = `${SUPABASE_URL}/rest/v1/rpc/increment_views`;
+    // 1. First, check if this browser tab session has already contributed a view increment
+    const hasVisitedThisSession = sessionStorage.getItem('has_counted_profile_view');
+    const selectUrl = `${SUPABASE_URL}/rest/v1/analytics?key=eq.portfolio_views&select=value`;
 
-    fetch(url, {
-      method: "POST",
+    // 2. Fetch the absolute latest global row integer value from the cloud
+    fetch(selectUrl, {
+      method: "GET",
       headers: {
         "apikey": SUPABASE_ANON_KEY,
-        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-        "Content-Type": "application/json",
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        "Pragma": "no-cache"
-      },
-      // Passing the string directly to the PostgreSQL function argument changes the payload footprint
-      body: JSON.stringify({
-        cache_buster: uniqueHash
-      })
-    })
-    .then((res) => {
-      if (!res.ok) throw new Error(`Database error response status: ${res.status}`);
-      return res.text();
-    })
-    .then((textData) => {
-      if (!textData) throw new Error("Empty execution matrix returned");
-
-      try {
-        const parsed = JSON.parse(textData);
-        
-        // Map data arrays cleanly: [{ total_views: X }]
-        if (Array.isArray(parsed) && parsed[0]?.total_views !== undefined) {
-          setViews(Number(parsed[0].total_views));
-        } else if (parsed && parsed.total_views !== undefined) {
-          setViews(Number(parsed.total_views));
-        } else if (!isNaN(parsed)) {
-          setViews(Number(parsed));
-        }
-      } catch (jsonError) {
-        const cleanNumber = Number(textData.replace(/[^0-9]/g, ''));
-        if (!isNaN(cleanNumber) && cleanNumber > 0) {
-          setViews(cleanNumber);
-        } else {
-          throw jsonError;
-        }
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
       }
     })
+    .then((res) => res.json())
+    .then((data) => {
+      const currentCount = data && data[0] ? Number(data[0].value) : 11;
+
+      // 3. If they ALREADY incremented during this browser session, just show the live global count
+      if (hasVisitedThisSession === 'true') {
+        setViews(currentCount);
+        return;
+      }
+
+      // 4. Otherwise, calculate the fresh incremented value
+      const updatedCount = currentCount + 1;
+
+      // 5. Update the global cloud database safely
+      fetch(`${SUPABASE_URL}/rest/v1/analytics?key=eq.portfolio_views`, {
+        method: "PATCH",
+        headers: {
+          "apikey": SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+          "Content-Type": "application/json",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify({ value: updatedCount })
+      })
+      .then(() => {
+        // Mark session tracking flag active so rapid refreshes don't double count or trigger Vercel caching locks
+        sessionStorage.setItem('has_counted_profile_view', 'true');
+        setViews(updatedCount);
+      })
+      .catch(() => {
+        setViews(currentCount);
+      });
+    })
     .catch((error) => {
-      console.error("Critical visitor execution pipeline broken:", error);
-      // Removed static fallback values so the UI doesn't freeze on old numbers
-      setViews(12); 
+      console.error("Supabase engine fallback hook initialization error:", error);
+      setViews(11); 
     });
   }, []);
 
