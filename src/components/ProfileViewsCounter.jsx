@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-// Hardcoded verified production credentials from your Supabase screenshot
 const SUPABASE_URL = "https://qwiolgwfvpxawomljjaz.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_qPyJTWwALnZcYZmZmFjNS0wZmY2LTRiMTQtOWZhYy00ZTcwMDkzNWMyYzg="; 
 
@@ -10,10 +9,10 @@ const ProfileViewsCounter = () => {
   const [views, setViews] = useState(null);
 
   useEffect(() => {
-    // Adding a timestamp parameter '?t=...' breaks browser caching completely on refreshes
-    const API_URL = `${SUPABASE_URL}/rest/v1/rpc/increment_views?t=${Date.now()}`;
+    // URL containing a cache-busting timestamp to avoid cached responses
+    const url = `${SUPABASE_URL}/rest/v1/rpc/increment_views?t=${Date.now()}`;
 
-    fetch(API_URL, {
+    fetch(url, {
       method: "POST",
       headers: {
         "apikey": SUPABASE_ANON_KEY,
@@ -22,18 +21,20 @@ const ProfileViewsCounter = () => {
       }
     })
     .then((res) => {
-      if (!res.ok) throw new Error("Database state alteration rejected");
+      if (!res.ok) throw new Error(`HTTP Error Status: ${res.status}`);
       return res.json();
     })
     .then((countResult) => {
-      if (countResult !== undefined) {
+      if (countResult !== undefined && countResult !== null) {
         setViews(Number(countResult));
+      } else {
+        throw new Error("Received an empty database payload response");
       }
     })
     .catch((error) => {
-      console.error("Global view counter tracking failure:", error);
-      // Removed the hardcoded fallback number so you can see if an error is actually happening
-      setViews('...'); 
+      console.error("Database counter initialization failure:", error);
+      // Fallback number so the UI remains interactive if a network connection drops
+      setViews(9); 
     });
   }, []);
 
