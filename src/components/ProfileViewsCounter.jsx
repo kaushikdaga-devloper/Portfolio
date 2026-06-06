@@ -11,43 +11,39 @@ const ProfileViewsCounter = () => {
   useEffect(() => {
     const url = `${SUPABASE_URL}/rest/v1/rpc/increment_views`;
 
+    // Generating a highly random key signature breaks any Vercel deduplication layers
+    const uniqueString = `${Date.now()}_${Math.random().toString(36).substring(7)}`;
+
     fetch(url, {
       method: "POST",
       headers: {
         "apikey": SUPABASE_ANON_KEY,
         "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
         "Content-Type": "application/json",
-        // Forces Vercel edge routers to bypass cache layers entirely
         "Cache-Control": "no-cache, no-store, must-revalidate",
         "Pragma": "no-cache"
       },
-      // Sending a unique payload structure breaks request deduplication for good!
+      // Passing the string directly to the PostgreSQL function argument
       body: JSON.stringify({
-        cache_buster: Date.now(),
-        rand_token: Math.random().toString(36).substring(7)
+        cache_buster: uniqueString
       })
     })
     .then((res) => {
-      if (!res.ok) throw new Error(`Network response error: ${res.status}`);
+      if (!res.ok) throw new Error(`Database error response status: ${res.status}`);
       return res.text();
     })
     .then((textData) => {
-      if (!textData) throw new Error("Received empty server response");
+      if (!textData) throw new Error("Empty execution matrix returned");
 
       try {
         const parsed = JSON.parse(textData);
         
-        // Handle database table row payload matching [{ total_views: X }]
-        if (Array.isArray(parsed) && parsed[0] && parsed[0].total_views !== undefined) {
+        // Handle database return schema matching the structural array format
+        if (Array.isArray(parsed) && parsed[0]?.total_views !== undefined) {
           setViews(Number(parsed[0].total_views));
-        } 
-        else if (Array.isArray(parsed) && parsed[0] !== undefined && !isNaN(parsed[0])) {
-          setViews(Number(parsed[0]));
-        }
-        else if (parsed && parsed.total_views !== undefined) {
+        } else if (parsed && parsed.total_views !== undefined) {
           setViews(Number(parsed.total_views));
-        } 
-        else if (!isNaN(parsed)) {
+        } else if (!isNaN(parsed)) {
           setViews(Number(parsed));
         }
       } catch (jsonError) {
@@ -60,8 +56,8 @@ const ProfileViewsCounter = () => {
       }
     })
     .catch((error) => {
-      console.error("Critical visitor counter execution failure:", error);
-      setViews(10); // Baseline placeholder metric if network drops out
+      console.error("Critical visitor execution pipeline broken:", error);
+      setViews(11); // Fallback production count metrics
     });
   }, []);
 
