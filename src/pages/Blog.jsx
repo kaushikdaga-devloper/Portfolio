@@ -1,6 +1,6 @@
 // src/pages/Blog.jsx
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useAnimationControls, useInView } from 'framer-motion';
 
 const container = {
   hidden: {},
@@ -14,6 +14,10 @@ const item = {
 
 const Blog = () => {
   const [posts, setPosts] = useState([]);
+  const blogRef = useRef(null);
+  const isBlogVisible = useInView(blogRef, { amount: 0.05 });
+  const shapeOneControls = useAnimationControls();
+  const shapeTwoControls = useAnimationControls();
 
   useEffect(() => {
     fetch('/content/blog.json')
@@ -22,11 +26,21 @@ const Blog = () => {
       .catch(() => setPosts([]));
   }, []);
 
+  useEffect(() => {
+    if (isBlogVisible) {
+      shapeOneControls.start({ y: [0, -20, 0], rotate: [0, 10, 0], transition: { repeat: Infinity, duration: 6 } });
+      shapeTwoControls.start({ y: [0, 20, 0], rotate: [0, -10, 0], transition: { repeat: Infinity, duration: 8 } });
+    } else {
+      shapeOneControls.stop();
+      shapeTwoControls.stop();
+    }
+  }, [isBlogVisible, shapeOneControls, shapeTwoControls]);
+
   return (
-    <div className="blog-page">
+    <div ref={blogRef} className="blog-page">
       <div className="floating-shapes">
-        <motion.div className="shape shape-1" animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 6 }} />
-        <motion.div className="shape shape-2" animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 8 }} />
+        <motion.div className="shape shape-1" animate={shapeOneControls} />
+        <motion.div className="shape shape-2" animate={shapeTwoControls} />
       </div>
       <div className="container py-5">
         <motion.div className="text-center mb-5" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>

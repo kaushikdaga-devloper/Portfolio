@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { loadRoute } from '../router/routeLoaders';
 
 // -------------------- SVG Icons --------------------
 const icons = {
@@ -54,23 +55,14 @@ const icons = {
       <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
     </svg>
   ),
-  blog: (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-    </svg>
-  ),
+  
   opensource: (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="3" />
       <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
     </svg>
   ),
-  testimonials: (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-    </svg>
-  ),
+  
 };
 
 // -------------------- Nav Link Generator --------------------
@@ -86,9 +78,7 @@ const moreLinks = [
   { to: '/core-cs', label: 'Core CS', icon: icons.coreCS },
   { to: '/experience', label: 'Experience', icon: icons.experience },
   { to: '/achievements', label: 'Achievements', icon: icons.achievements },
-  { to: '/blog', label: 'Blog', icon: icons.blog },
   { to: '/open-source', label: 'Open Source', icon: icons.opensource },
-  { to: '/testimonials', label: 'Testimonials', icon: icons.testimonials },
 ];
 
 // -------------------- Header Component --------------------
@@ -96,6 +86,7 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'theme-dark');
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 992);
   const menuRef = useRef(null);
   const moreRef = useRef(null);
@@ -103,22 +94,23 @@ const Header = () => {
   const isHome = location.pathname === '/';
 
   const toggleTheme = () => {
-    const next = document.body.classList.contains('theme-light')
+    const next = theme === 'theme-light'
       ? 'theme-dark'
       : 'theme-light';
-    document.body.classList.remove('theme-light', 'theme-dark');
-    document.body.classList.add(next);
+    setTheme(next);
     localStorage.setItem('theme', next);
   };
 
   useEffect(() => {
-    const saved = localStorage.getItem('theme') || 'theme-dark';
-    document.body.classList.add(saved);
-
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    document.body.classList.remove('theme-light', 'theme-dark');
+    document.body.classList.add(theme);
+  }, [theme]);
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth > 992);
@@ -195,6 +187,8 @@ const Header = () => {
                       to={link.to}
                       className="nav-link"
                       onClick={closeMenu}
+                      onMouseEnter={() => loadRoute(link.to)}
+                      onFocus={() => loadRoute(link.to)}
                     >
                       <span className="nav-icon">{link.icon}</span>
                       {link.label}
@@ -237,6 +231,8 @@ const Header = () => {
                               to={link.to}
                               className="more-dropdown-item"
                               onClick={() => { closeMore(); closeMenu(); }}
+                              onMouseEnter={() => loadRoute(link.to)}
+                              onFocus={() => loadRoute(link.to)}
                             >
                               <span className="more-dd-icon">{link.icon}</span>
                               <span>{link.label}</span>
@@ -251,7 +247,7 @@ const Header = () => {
                 {/* Theme Toggle */}
                 <li className="nav-item ms-lg-2">
                   <button onClick={toggleTheme} className="theme-toggle-btn" aria-label="Toggle theme">
-                    {document.body.classList.contains('theme-light') ? '🌙' : '☀️'}
+                    {theme === 'theme-light' ? '🌙' : '☀️'}
                   </button>
                 </li>
               </ul>

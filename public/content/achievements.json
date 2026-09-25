@@ -1,13 +1,5 @@
 [
-  {
-    "title": "Top Performer – Ethical Hacking Workshop",
-    "organization": "GNIT, Kolkata",
-    "date": "2024",
-    "description": "Recognized as a Top Performer in a 2-day Ethical Hacking workshop. Learned network defense, packet capturing, and deauthentication protocols.",
-    "icon": "🔐",
-    "certificateImage": "/assets/images/certificates/ethical-hacking.jpg",
-    "certificateLink": "https://example.com/certificate1"
-  },
+ 
   {
     "title": "Full Stack Development Certificate",
     "organization": "Apna College (Delta 6.0)",
@@ -25,6 +17,15 @@
     "icon": "🧠",
     "certificateImage": "",
     "certificateLink": "/dsa"
+  },
+   {
+    "title": "Top Performer – Ethical Hacking Workshop",
+    "organization": "GNIT, Hyderabad",
+    "date": "2025",
+    "description": "Recognized as a Top Performer in a 2-day Ethical Hacking workshop. Learned network defense, packet capturing, and deauthentication protocols.",
+    "icon": "🔐",
+    "certificateImage": "/assets/images/certificates/ethical-hacking.jpg",
+    "certificateLink": "https://example.com/certificate1"
   },
   {
     "title": "Hackathon Participation",

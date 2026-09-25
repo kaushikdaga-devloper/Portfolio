@@ -1,9 +1,13 @@
 // src/pages/OpenSource.jsx
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useAnimationControls, useInView } from 'framer-motion';
 
 const OpenSource = () => {
   const [repos, setRepos] = useState([]);
+  const openSourceRef = useRef(null);
+  const isOpenSourceVisible = useInView(openSourceRef, { amount: 0.05 });
+  const shapeOneControls = useAnimationControls();
+  const shapeTwoControls = useAnimationControls();
 
   useEffect(() => {
     fetch('https://api.github.com/users/kaushikdaga-devloper/repos?sort=updated&per_page=6')
@@ -12,11 +16,21 @@ const OpenSource = () => {
       .catch(() => setRepos([]));
   }, []);
 
+  useEffect(() => {
+    if (isOpenSourceVisible) {
+      shapeOneControls.start({ y: [0, -20, 0], rotate: [0, 10, 0], transition: { repeat: Infinity, duration: 6 } });
+      shapeTwoControls.start({ y: [0, 20, 0], rotate: [0, -10, 0], transition: { repeat: Infinity, duration: 8 } });
+    } else {
+      shapeOneControls.stop();
+      shapeTwoControls.stop();
+    }
+  }, [isOpenSourceVisible, shapeOneControls, shapeTwoControls]);
+
   return (
-    <div className="opensource-page">
+    <div ref={openSourceRef} className="opensource-page">
       <div className="floating-shapes">
-        <motion.div className="shape shape-1" animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 6 }} />
-        <motion.div className="shape shape-2" animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 8 }} />
+        <motion.div className="shape shape-1" animate={shapeOneControls} />
+        <motion.div className="shape shape-2" animate={shapeTwoControls} />
       </div>
       <div className="container py-5">
         <motion.div className="text-center mb-5" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
@@ -31,6 +45,8 @@ const OpenSource = () => {
               src="https://ghchart.rshah.org/6c5ce7/kaushikdaga-devloper"
               alt="GitHub Contribution Graph"
               className="img-fluid rounded-4"
+              loading="lazy"
+              decoding="async"
               style={{ background: 'rgba(255,255,255,0.02)', padding: '1rem' }}
             />
           </div>

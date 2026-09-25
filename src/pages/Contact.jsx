@@ -1,6 +1,6 @@
 // src/pages/Contact.jsx
-import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useAnimationControls, useInView } from 'framer-motion';
 
 const contactInfo = {
   email: 'kaushikdaga05@gmail.com',
@@ -41,6 +41,20 @@ const contactInfo = {
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const contactRef = useRef(null);
+  const isContactVisible = useInView(contactRef, { amount: 0.05 });
+  const shapeOneControls = useAnimationControls();
+  const shapeTwoControls = useAnimationControls();
+
+  useEffect(() => {
+    if (isContactVisible) {
+      shapeOneControls.start({ y: [0, -20, 0], rotate: [0, 10, 0], transition: { repeat: Infinity, duration: 6 } });
+      shapeTwoControls.start({ y: [0, 20, 0], rotate: [0, -10, 0], transition: { repeat: Infinity, duration: 8 } });
+    } else {
+      shapeOneControls.stop();
+      shapeTwoControls.stop();
+    }
+  }, [isContactVisible, shapeOneControls, shapeTwoControls]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -51,10 +65,10 @@ const Contact = () => {
   };
 
   return (
-    <div className="contact-page">
+    <div ref={contactRef} className="contact-page">
       <div className="floating-shapes">
-        <motion.div className="shape shape-1" animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 6 }} />
-        <motion.div className="shape shape-2" animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 8 }} />
+        <motion.div className="shape shape-1" animate={shapeOneControls} />
+        <motion.div className="shape shape-2" animate={shapeTwoControls} />
       </div>
 
       <div className="container py-5">

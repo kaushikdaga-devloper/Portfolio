@@ -1,6 +1,6 @@
 // src/pages/Experience.jsx
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useAnimationControls, useInView } from 'framer-motion';
 
 const container = {
   hidden: {},
@@ -14,6 +14,10 @@ const item = {
 
 const Experience = () => {
   const [experiences, setExperiences] = useState([]);
+  const experienceRef = useRef(null);
+  const isExperienceVisible = useInView(experienceRef, { amount: 0.05 });
+  const shapeOneControls = useAnimationControls();
+  const shapeTwoControls = useAnimationControls();
 
   useEffect(() => {
     fetch('/content/experience.json')
@@ -22,11 +26,21 @@ const Experience = () => {
       .catch(() => setExperiences([]));
   }, []);
 
+  useEffect(() => {
+    if (isExperienceVisible) {
+      shapeOneControls.start({ y: [0, -20, 0], rotate: [0, 10, 0], transition: { repeat: Infinity, duration: 6 } });
+      shapeTwoControls.start({ y: [0, 20, 0], rotate: [0, -10, 0], transition: { repeat: Infinity, duration: 8 } });
+    } else {
+      shapeOneControls.stop();
+      shapeTwoControls.stop();
+    }
+  }, [isExperienceVisible, shapeOneControls, shapeTwoControls]);
+
   return (
-    <div className="experience-page">
+    <div ref={experienceRef} className="experience-page">
       <div className="floating-shapes">
-        <motion.div className="shape shape-1" animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 6 }} />
-        <motion.div className="shape shape-2" animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 8 }} />
+        <motion.div className="shape shape-1" animate={shapeOneControls} />
+        <motion.div className="shape shape-2" animate={shapeTwoControls} />
       </div>
       <div className="container py-5">
         <motion.div className="text-center mb-5" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>

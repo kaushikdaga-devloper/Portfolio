@@ -48,6 +48,8 @@ const AssistantWidget = () => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showPrompt, setShowPrompt] = useState(true);
+  const [introVisible, setIntroVisible] = useState(true);
+  const [pageVisible, setPageVisible] = useState(() => !document.hidden);
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,11 +58,19 @@ const AssistantWidget = () => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight;
       const pageHeight = document.documentElement.scrollHeight;
-      setShowPrompt(scrollPosition < pageHeight * 0.5);
+      const introIsVisible = location.pathname === '/' && window.scrollY <= 0;
+      setIntroVisible(introIsVisible);
+      setShowPrompt(location.pathname === '/' && (introIsVisible || scrollPosition < pageHeight * 0.5));
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => setPageVisible(!document.hidden);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
   const scrollToBottom = () => {
@@ -96,7 +106,7 @@ const AssistantWidget = () => {
       <AnimatePresence>
         {location.pathname === '/' && !open && showPrompt && (
           <motion.div
-            className="assistant-home-prompt"
+            className={`assistant-home-prompt ${introVisible ? 'assistant-home-prompt-inline' : ''} ${pageVisible ? '' : 'animation-paused'}`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
@@ -214,7 +224,7 @@ const AssistantWidget = () => {
                 ))}
 
                 {loading && (
-                  <motion.div className="assistant-bubble assistant" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                  <motion.div className={`assistant-bubble assistant ${pageVisible ? '' : 'animation-paused'}`} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
                     <div className="typing-indicator">
                       <span></span><span></span><span></span>
                     </div>

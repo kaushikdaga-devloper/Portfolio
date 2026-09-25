@@ -1,5 +1,6 @@
 // src/pages/CoreCS.jsx
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { motion, useAnimationControls, useInView } from 'framer-motion';
 
 const topics = [
   {
@@ -62,11 +63,27 @@ const item = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
-const CoreCS = () => (
-  <div className="corecs-page">
+const CoreCS = () => {
+  const coreCSRef = useRef(null);
+  const isCoreCSVisible = useInView(coreCSRef, { amount: 0.05 });
+  const shapeOneControls = useAnimationControls();
+  const shapeTwoControls = useAnimationControls();
+
+  useEffect(() => {
+    if (isCoreCSVisible) {
+      shapeOneControls.start({ y: [0, -20, 0], rotate: [0, 10, 0], transition: { repeat: Infinity, duration: 6 } });
+      shapeTwoControls.start({ y: [0, 20, 0], rotate: [0, -10, 0], transition: { repeat: Infinity, duration: 8 } });
+    } else {
+      shapeOneControls.stop();
+      shapeTwoControls.stop();
+    }
+  }, [isCoreCSVisible, shapeOneControls, shapeTwoControls]);
+
+  return (
+  <div ref={coreCSRef} className="corecs-page">
     <div className="floating-shapes">
-      <motion.div className="shape shape-1" animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 6 }} />
-      <motion.div className="shape shape-2" animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 8 }} />
+      <motion.div className="shape shape-1" animate={shapeOneControls} />
+      <motion.div className="shape shape-2" animate={shapeTwoControls} />
     </div>
 
     <div className="container py-5">
@@ -110,6 +127,7 @@ const CoreCS = () => (
       </motion.div>
     </div>
   </div>
-);
+  );
+};
 
 export default CoreCS;

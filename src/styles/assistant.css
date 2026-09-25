@@ -69,15 +69,18 @@ body.theme-light .assistant-input-area { background: rgba(0,0,0,0.05); }
   padding: 0.6rem 1.3rem; font-size: 0.9rem; font-weight: 500;
   color: var(--color-text-primary); cursor: pointer;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: bottom 0.4s ease, right 0.4s ease, border-color 0.3s, box-shadow 0.3s;
   animation: subtleGlow 2.5s infinite alternate;
 }
+.assistant-home-prompt-inline { bottom: 2rem; right: calc(2rem + 56px + 0.75rem); }
 body.theme-light .assistant-home-prompt { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.12); }
 @keyframes subtleGlow {
   0% { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 10px rgba(108, 92, 231, 0.1); }
   100% { box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 18px rgba(108, 92, 231, 0.25); }
 }
 .assistant-home-prompt:hover { border-color: var(--color-accent); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4), 0 0 25px rgba(108, 92, 231, 0.35); }
+.animation-paused { animation-play-state: paused !important; }
+.assistant-bubble.animation-paused .typing-indicator span { animation-play-state: paused; }
 
 /* Suggestions */
 .assistant-suggestions { list-style: none; padding: 0; margin-top: 0.8rem; text-align: left; }
@@ -91,4 +94,5 @@ body.theme-light .assistant-home-prompt { background: rgba(0,0,0,0.04); border-c
     right: 0.5rem; bottom: 85px; font-size: 0.72rem; padding: 0.4rem 0.8rem;
     max-width: calc(100vw - 60px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
+  .assistant-home-prompt-inline { bottom: 1rem; right: calc(1rem + 56px + 0.5rem); max-width: calc(100vw - 56px - 2rem); }
 }

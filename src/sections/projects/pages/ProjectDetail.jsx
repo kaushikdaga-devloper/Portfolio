@@ -68,6 +68,7 @@ const AlwaysVisibleImage = ({ src, alt, className = '', onClick }) => {
       onClick={onClick}
       onError={() => setBroken(true)}
       loading="lazy"
+      decoding="async"
     />
   );
 };

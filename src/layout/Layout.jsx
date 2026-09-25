@@ -4,10 +4,12 @@ import Header from './Header';
 import Footer from './Footer';
 import AssistantWidget from '../assistant/AssistantWidget';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useLowEndDevice } from '../hooks/useLowEndDevice';
 
 const Layout = () => {
   const location = useLocation();
   useScrollReveal(); // optional, keep for legacy data-reveal elements
+  useLowEndDevice();
 
   return (
     <>

@@ -59,6 +59,13 @@ body {
   overflow-x: hidden;
 }
 
+body.performance-low-end .shape { filter: blur(16px); }
+body.performance-low-end .profile-ring,
+body.performance-low-end .about-profile-ring { filter: blur(10px); }
+body.performance-low-end .assistant-overlay,
+body.performance-low-end .assistant-panel { backdrop-filter: none; }
+body.performance-low-end .assistant-home-prompt { animation-duration: 4s; }
+
 ::selection {
   background: var(--color-accent-light);
   color: #0b0b0f;

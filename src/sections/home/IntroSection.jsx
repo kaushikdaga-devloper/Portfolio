@@ -1,17 +1,23 @@
 // src/sections/home/IntroSection.jsx
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, useAnimationControls, useInView } from 'framer-motion';
 import ProfileViewsCounter from '../../components/ProfileViewsCounter';
 
 const IntroSection = ({ data }) => {
   const [roleIndex, setRoleIndex] = useState(0);
   const [text, setText] = useState('');
   const [deleting, setDeleting] = useState(false);
+  const introRef = useRef(null);
+  const isIntroVisible = useInView(introRef, { amount: 0.1 });
+  const shapeOneControls = useAnimationControls();
+  const shapeTwoControls = useAnimationControls();
+  const shapeThreeControls = useAnimationControls();
   const roles = data.roles;
 
   useEffect(() => {
     const current = roles[roleIndex % roles.length];
     let timeout;
+    if (!isIntroVisible) return undefined;
     if (!deleting && text.length < current.length) {
       timeout = setTimeout(() => setText(current.slice(0, text.length + 1)), 70);
     } else if (!deleting && text.length === current.length) {
@@ -23,14 +29,29 @@ const IntroSection = ({ data }) => {
       setRoleIndex((prev) => prev + 1);
     }
     return () => clearTimeout(timeout);
-  }, [text, deleting, roleIndex, roles]);
+  }, [text, deleting, roleIndex, roles, isIntroVisible]);
+
+  useEffect(() => {
+    if (isIntroVisible) {
+      shapeOneControls.start({ y: [0, -20, 0], rotate: [0, 10, 0], transition: { repeat: Infinity, duration: 6 } });
+      shapeTwoControls.start({ y: [0, 20, 0], rotate: [0, -10, 0], transition: { repeat: Infinity, duration: 8 } });
+      shapeThreeControls.start({ y: [0, -15, 0], scale: [1, 1.1, 1], transition: { repeat: Infinity, duration: 7 } });
+    } else {
+      shapeOneControls.stop();
+      shapeTwoControls.stop();
+      shapeThreeControls.stop();
+    }
+  }, [isIntroVisible, shapeOneControls, shapeTwoControls, shapeThreeControls]);
 
   return (
-    <section className="intro-section min-vh-100 d-flex align-items-center position-relative overflow-hidden">
+    <section
+      ref={introRef}
+      className={`intro-section min-vh-100 d-flex align-items-center position-relative overflow-hidden ${isIntroVisible ? 'intro-section-visible' : 'intro-section-hidden'}`}
+    >
       <div className="floating-shapes">
-        <motion.div className="shape shape-1" animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 6 }} />
-        <motion.div className="shape shape-2" animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 8 }} />
-        <motion.div className="shape shape-3" animate={{ y: [0, -15, 0], scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 7 }} />
+        <motion.div className="shape shape-1" animate={shapeOneControls} />
+        <motion.div className="shape shape-2" animate={shapeTwoControls} />
+        <motion.div className="shape shape-3" animate={shapeThreeControls} />
       </div>
       <div className="container">
         <div className="row align-items-center g-5">
@@ -82,7 +103,7 @@ const IntroSection = ({ data }) => {
           <div className="col-lg-5 text-center">
             <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.3 }} className="profile-3d-wrapper">
               <div className="profile-ring" />
-              <img src={data.image} alt={data.name} className="profile-img-hero" />
+              <img src={data.image} alt={data.name} className="profile-img-hero" loading="eager" fetchPriority="high" decoding="async" />
             </motion.div>
 
             {/* Profile Views Counter */}

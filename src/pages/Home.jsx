@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 import IntroSection from '../sections/home/IntroSection';
 import SkillsSection from '../sections/home/SkillsSection';
 import EducationSection from '../sections/home/EducationSection';
-import CurrentlyLearningSection from '../sections/home/CurrentlyLearningSection';
 import FeaturedProjectsSection from '../sections/home/FeaturedProjectsSection';
+import HomeAchievementsSection from '../sections/home/HomeAchievementsSection';
+import HomeScrollTrail from '../components/HomeScrollTrail';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
@@ -20,6 +21,7 @@ const Home = () => {
 
   return (
     <div className="home-page">
+      <HomeScrollTrail />
       {data.sections.map((section) => {
         if (!section.enabled) return null;
         switch (section.type) {
@@ -32,8 +34,8 @@ const Home = () => {
         }
       })}
       <EducationSection />
-      <CurrentlyLearningSection />
       <FeaturedProjectsSection />
+      <HomeAchievementsSection />
       {/* Compact Contact CTA */}
       <section className="py-6 text-center">
         <div className="container">

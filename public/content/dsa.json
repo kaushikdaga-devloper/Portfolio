@@ -2,14 +2,15 @@
   "platforms": {
     "leetcode": {
       "name": "LeetCode",
-      "totalSolved": 150,
-      "totalProblems": 3089,
+      "totalSolved": 250,
+      "totalProblems": 4060,
       "easy": 70,
-      "medium": 60,
+      "medium": 160,
       "hard": 20,
+      "difficultyShare": { "easy": 20, "medium": 60, "hard": 20 },
       "languages": ["C++", "Python", "JavaScript"],
       "skills": ["Dynamic Programming", "Graphs", "Trees", "Greedy"],
-      "profileUrl": "https://leetcode.com/u/your-username",
+      "profileUrl": "https://leetcode.com/u/kaushikdaga/",
       "profileImage": "/assets/images/leetcode-profile.png",
       "images": [
         "https://images.unsplash.com/photo-1515879218367-8466d910aua9?w=400&q=80",

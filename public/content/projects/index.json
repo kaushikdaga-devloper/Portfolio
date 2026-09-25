@@ -2,14 +2,7 @@
   "title": "Projects",
   "subtitle": "Selected work focused on depth, systems thinking, and real-world constraints.",
   "items": [
-    {
-      "id": "smart-travel-planner",
-      "title": "Smart Travel Planner",
-      "description": "A location-aware travel planning system with route optimization, cost estimation, and map-based discovery.",
-      "slug": "smart-travel-planner",
-      "tags": ["React", "Maps", "APIs", "System Design"],
-      "status": "Active"
-    },
+   
     {
       "id": "video-connect",
       "title": "Video Connect",
@@ -24,6 +17,14 @@
       "description": "An intelligent trading platform utilizing real-time data and machine learning for optimal trading decisions.",
       "slug": "smart-signal-trading",
       "tags": ["Finance", "LLM Pipeline", "Trading Algorithms"],
+      "status": "Active"
+    },
+     {
+      "id": "smart-travel-planner",
+      "title": "Smart Travel Planner",
+      "description": "A location-aware travel planning system with route optimization, cost estimation, and map-based discovery.",
+      "slug": "smart-travel-planner",
+      "tags": ["React", "Maps", "APIs", "System Design"],
       "status": "Active"
     }
   ]

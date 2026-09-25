@@ -16,7 +16,7 @@
           "Systems Thinker"
         ],
         "summary": [
-          "Software developer with a deep interest in full‑stack engineering and algorithmic thinking. Currently in my pre‑final year of computer science, I focus on crafting reliable systems and elegant solutions that stand the test of time."
+          "Software developer with a deep interest in full‑stack engineering and algorithmic thinking. Currently in my final year of computer science, I focus on crafting reliable systems and elegant solutions that stand the test of time."
         ],
         "image": "/assets/images/profile.jpeg"
       }
@@ -58,7 +58,7 @@
         "groups": [
           {
             "title": "Programming Languages",
-            "items": ["C", "C++", "JavaScript (ES6+)", "Python"]
+            "items": ["C++", "Java", "JavaScript (ES6+)", "Python"]
           },
           {
             "title": "Web Technologies",
@@ -84,7 +84,6 @@
               "Linux (2+ years)",
               "Postman",
               "Docker",
-              "Kubernetes",
               "LLM (Large Language Models)"
             ]
           },

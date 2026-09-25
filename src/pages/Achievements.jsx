@@ -1,6 +1,6 @@
 // src/pages/Achievements.jsx
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence, useAnimationControls, useInView } from 'framer-motion';
 
 // ---- Lightbox for certificate images ----
 const CertificateLightbox = ({ src, alt, onClose }) => (
@@ -42,6 +42,10 @@ const item = {
 const Achievements = () => {
   const [achievements, setAchievements] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const achievementsRef = useRef(null);
+  const isAchievementsVisible = useInView(achievementsRef, { amount: 0.05 });
+  const shapeOneControls = useAnimationControls();
+  const shapeTwoControls = useAnimationControls();
 
   useEffect(() => {
     fetch('/content/achievements.json')
@@ -50,12 +54,22 @@ const Achievements = () => {
       .catch(() => setAchievements([]));
   }, []);
 
+  useEffect(() => {
+    if (isAchievementsVisible) {
+      shapeOneControls.start({ y: [0, -20, 0], rotate: [0, 10, 0], transition: { repeat: Infinity, duration: 6 } });
+      shapeTwoControls.start({ y: [0, 20, 0], rotate: [0, -10, 0], transition: { repeat: Infinity, duration: 8 } });
+    } else {
+      shapeOneControls.stop();
+      shapeTwoControls.stop();
+    }
+  }, [isAchievementsVisible, shapeOneControls, shapeTwoControls]);
+
   return (
-    <div className="achievements-page">
+    <div ref={achievementsRef} className="achievements-page">
       {/* Floating shapes */}
       <div className="floating-shapes">
-        <motion.div className="shape shape-1" animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 6 }} />
-        <motion.div className="shape shape-2" animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 8 }} />
+        <motion.div className="shape shape-1" animate={shapeOneControls} />
+        <motion.div className="shape shape-2" animate={shapeTwoControls} />
       </div>
 
       <div className="container py-5">
@@ -106,6 +120,8 @@ const Achievements = () => {
                     src={ach.certificateImage}
                     alt={ach.title}
                     className="ach-cert-img"
+                    loading="lazy"
+                    decoding="async"
                     onError={(e) => {
                       e.target.style.display = 'none';
                       e.target.parentNode.classList.add('placeholder');

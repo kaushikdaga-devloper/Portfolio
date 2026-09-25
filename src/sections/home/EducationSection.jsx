@@ -8,8 +8,8 @@ const educationData = [
     institution: 'Guru Nanak Institute of Technology',
     location: 'Hyderabad, Telangana',
     duration: '2023 – 2027',
-    currentSem: '6th Semester',
-    cgpa: '8.73',
+    currentSem: '7th Semester',
+    cgpa: '8.70',
     status: 'Pursuing',
     highlights: [
       'Specialized in Artificial Intelligence & Machine Learning',
@@ -77,7 +77,7 @@ const EducationCard = ({ edu, index }) => {
           {/* Meta info cards */}
           <div className="edu-meta-row">
             <div className="edu-meta-item">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                 <line x1="16" y1="2" x2="16" y2="6" />
                 <line x1="8" y1="2" x2="8" y2="6" />

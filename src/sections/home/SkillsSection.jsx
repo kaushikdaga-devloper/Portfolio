@@ -2,30 +2,18 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const SkillBar = ({ name, level }) => {
+const SkillChip = ({ name }) => {
   return (
     <motion.div
-      className="skill-item"
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      className="skill-chip"
+      initial={{ opacity: 0, y: 8 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.35 }}
+      whileHover={{ y: -3 }}
     >
-      <div className="skill-info">
-        <span className="skill-name">{name}</span>
-        <span className="skill-percent">{level}%</span>
-      </div>
-      <div className="skill-track">
-        <motion.div
-          className="skill-fill"
-          initial={{ width: 0 }}
-          whileInView={{ width: `${level}%` }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.2, ease: 'easeOut' }}
-        />
-        <div className="skill-glow" style={{ left: `${level}%` }} />
-      </div>
+      <span className="skill-chip-dot" aria-hidden="true" />
+      <span className="skill-name">{name}</span>
     </motion.div>
   );
 };
@@ -80,7 +68,7 @@ const SkillsSection = ({ data }) => {
           ))}
         </motion.div>
 
-        {/* Skill cards */}
+        {/* Grouped skill cards */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeGroup}
@@ -97,14 +85,15 @@ const SkillsSection = ({ data }) => {
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
               >
                 <div className="skill-card-premium glass-card p-4">
-                  <h4 className="skill-group-title">{group.title}</h4>
-                  {group.items.map((skill, i) => (
-                    <SkillBar
-                      key={skill}
-                      name={skill}
-                      level={Math.floor(Math.random() * 40 + 60)} // dummy
-                    />
-                  ))}
+                  <div className="skill-card-heading">
+                    <span className="skill-card-kicker">01 / category</span>
+                    <h4 className="skill-group-title">{group.title}</h4>
+                  </div>
+                  <div className="skill-chip-grid">
+                    {group.items.map((skill) => (
+                      <SkillChip key={skill} name={skill} />
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             ))}

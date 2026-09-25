@@ -3,60 +3,60 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const SUPABASE_URL = "https://qwiolgwfvpxawomljjaz.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_qPyJTWwALnZcYZmZmFjNS0wZmY2LTRiMTQtOWZhYy00ZTcwMDkzNWMyYzg="; 
+const SUPABASE_ANON_KEY = "sb_publishable_qPYjTWwALnZcYZZpttRFaQ_zpI160XG"; 
+
+const readCount = (data) => {
+  const value = Array.isArray(data) ? data[0]?.value : data?.value ?? data;
+  const count = Number(value);
+  if (!Number.isFinite(count)) throw new Error('Invalid profile view count');
+  return count;
+};
 
 const ProfileViewsCounter = () => {
   const [views, setViews] = useState(null);
 
   useEffect(() => {
-    // 1. First, check if this browser tab session has already contributed a view increment
-    const hasVisitedThisSession = sessionStorage.getItem('has_counted_profile_view');
-    const selectUrl = `${SUPABASE_URL}/rest/v1/analytics?key=eq.portfolio_views&select=value`;
+    const visitKey = 'has_counted_profile_view';
+    const hasVisitedThisSession = sessionStorage.getItem(visitKey);
 
-    // 2. Fetch the absolute latest global row integer value from the cloud
-    fetch(selectUrl, {
-      method: "GET",
-      headers: {
-        "apikey": SUPABASE_ANON_KEY,
-        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
-      }
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      const currentCount = data && data[0] ? Number(data[0].value) : 11;
-
-      // 3. If they ALREADY incremented during this browser session, just show the live global count
-      if (hasVisitedThisSession === 'true') {
-        setViews(currentCount);
-        return;
-      }
-
-      // 4. Otherwise, calculate the fresh incremented value
-      const updatedCount = currentCount + 1;
-
-      // 5. Update the global cloud database safely
-      fetch(`${SUPABASE_URL}/rest/v1/analytics?key=eq.portfolio_views`, {
-        method: "PATCH",
+    if (hasVisitedThisSession === 'true') {
+      fetch(`${SUPABASE_URL}/rest/v1/analytics?key=eq.portfolio_views&select=value`, {
         headers: {
-          "apikey": SUPABASE_ANON_KEY,
-          "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-          "Content-Type": "application/json",
-          "Prefer": "return=minimal"
-        },
-        body: JSON.stringify({ value: updatedCount })
+          apikey: SUPABASE_ANON_KEY,
+          Authorization: `Bearer ${SUPABASE_ANON_KEY}`
+        }
       })
-      .then(() => {
-        // Mark session tracking flag active so rapid refreshes don't double count or trigger Vercel caching locks
-        sessionStorage.setItem('has_counted_profile_view', 'true');
-        setViews(updatedCount);
-      })
-      .catch(() => {
-        setViews(currentCount);
-      });
+        .then((response) => {
+          if (!response.ok) throw new Error(`Supabase read failed (${response.status})`);
+          return response.json();
+        })
+        .then((data) => setViews(readCount(data)))
+        .catch((error) => {
+          console.error('Profile views error:', error);
+          setViews(null);
+        });
+      return;
+    }
+
+    sessionStorage.setItem(visitKey, 'true');
+
+    fetch(`${SUPABASE_URL}/rest/v1/rpc/increment_profile_views`, {
+      method: 'POST',
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json'
+      }
     })
+    .then((response) => {
+      if (!response.ok) throw new Error(`Supabase increment failed (${response.status})`);
+      return response.json();
+    })
+    .then((updatedCount) => setViews(readCount(updatedCount)))
     .catch((error) => {
-      console.error("Supabase engine fallback hook initialization error:", error);
-      setViews(11); 
+      console.error('Profile views error:', error);
+      sessionStorage.removeItem(visitKey);
+      setViews(null);
     });
   }, []);
 

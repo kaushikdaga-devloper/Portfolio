@@ -1,5 +1,6 @@
 // src/pages/About.jsx
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { motion, useAnimationControls, useInView } from 'framer-motion';
 
 const aboutData = {
   name: 'Kaushik Daga',
@@ -60,12 +61,28 @@ const StatCounter = ({ value, label, delay }) => (
   </motion.div>
 );
 
-const About = () => (
-  <div className="about-page">
+const About = () => {
+  const aboutRef = useRef(null);
+  const isAboutVisible = useInView(aboutRef, { amount: 0.05 });
+  const shapeOneControls = useAnimationControls();
+  const shapeTwoControls = useAnimationControls();
+
+  useEffect(() => {
+    if (isAboutVisible) {
+      shapeOneControls.start({ y: [0, -20, 0], rotate: [0, 10, 0], transition: { repeat: Infinity, duration: 6 } });
+      shapeTwoControls.start({ y: [0, 20, 0], rotate: [0, -10, 0], transition: { repeat: Infinity, duration: 8 } });
+    } else {
+      shapeOneControls.stop();
+      shapeTwoControls.stop();
+    }
+  }, [isAboutVisible, shapeOneControls, shapeTwoControls]);
+
+  return (
+  <div ref={aboutRef} className={`about-page ${isAboutVisible ? 'about-page-visible' : 'about-page-hidden'}`}>
     {/* Floating shapes */}
     <div className="floating-shapes">
-      <motion.div className="shape shape-1" animate={{ y: [0, -20, 0], rotate: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 6 }} />
-      <motion.div className="shape shape-2" animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 8 }} />
+      <motion.div className="shape shape-1" animate={shapeOneControls} />
+      <motion.div className="shape shape-2" animate={shapeTwoControls} />
     </div>
 
     <div className="container py-5">
@@ -95,7 +112,7 @@ const About = () => (
               <div className="col-md-4 text-center">
                 <div className="about-profile-wrapper">
                   <div className="about-profile-ring" />
-                  <img src="/assets/images/profile.jpeg" alt={aboutData.name} className="about-profile-img" />
+                  <img src="/assets/images/profile.jpeg" alt={aboutData.name} className="about-profile-img" loading="eager" fetchPriority="high" decoding="async" />
                 </div>
                 <h4 className="mt-3 mb-1">{aboutData.name}</h4>
                 <p className="small text-muted">{aboutData.title}</p>
@@ -172,6 +189,7 @@ const About = () => (
       </div>
     </div>
   </div>
-);
+  );
+};
 
 export default About;
