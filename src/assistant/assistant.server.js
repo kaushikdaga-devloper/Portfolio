@@ -19,7 +19,7 @@ async function loadPortfolioContext(origin) {
 }
 
 export async function handleAssistantApi({ question, history = [], origin }) {
-  const apiKey = globalThis.process?.env?.GROQ_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) throw new Error("GROQ_API_KEY is not configured");
   if (typeof question !== "string" || !question.trim()) {
     return { answer: "Please enter a question about Kaushik's portfolio." };
